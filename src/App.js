@@ -68,8 +68,9 @@ class App extends React.Component {
   }
 
   deleteData(key) {
-    let movieRef = ref(database, `movies-${key}`);
+    let movieRef = ref(database, `/movies/${key}`);
     console.log("PATH REFERENCE", movieRef);
+    remove(movieRef);
   }
 
   render() {
