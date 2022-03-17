@@ -37,14 +37,14 @@ class App extends React.Component {
       //   });
       // });
 
-      console.log(snapshot.val());
-      console.log(snapshot.hasChildren());
+      // console.log(snapshot.val());
+      // console.log(snapshot.hasChildren());
       // const result = snapshot.map((item) => {
       //   return { title: item.title };
       //   console.log(item);
       // });
 
-      console.log("result");
+      //console.log("result");
 
       const returnList = [];
 
@@ -73,11 +73,16 @@ class App extends React.Component {
   }
 
   updateData(key) {
-    const moviesRef = ref(database, `/movies/${key}`);
-    const movieData = {
-      watched: true,
-    };
-    update(moviesRef, movieData);
+    const watchedMoviesRef = ref(database, `/movies/${key}`);
+    //const moviesRef = ref(database, `/movies/${key}`);
+    let movieData;
+    onValue(watchedMoviesRef, (snapshot) => {
+      const newData = snapshot.val().watched;
+      movieData = { watched: !newData };
+    });
+    update(watchedMoviesRef, movieData);
+
+    //update(moviesRef, movieData);
   }
 
   render() {
