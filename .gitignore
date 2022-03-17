@@ -24,3 +24,7 @@ yarn-error.log*
 
 # firebase config
 /src/firebase-config.js
+src/App.js
+
+# Makefile
+/Makefile

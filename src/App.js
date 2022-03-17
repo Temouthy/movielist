@@ -4,62 +4,62 @@ import { Route, Routes } from "react-router-dom";
 import Menu from "./components/Menu";
 import MovieList from "./components/MovieList";
 import AddMovie from "./components/AddMovie";
-import { ref, onValue, remove } from "firebase/database";
+import { ref, onValue, remove, update } from "firebase/database";
 import { database } from "./firebase-config";
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: {
-        id: Number,
-        items: [],
-      },
+      data: [],
       loading: true,
       error: null,
     };
+    this.updateData = this.updateData.bind(this);
   }
 
   componentDidMount() {
-    /*fetch("https://api.themoviedb.org/3/movie/550?api_key=c29d13a24d8fc2be9bf34aa8c04f45b2&language=en-US")
-      .then(res => res.json())
-      .then(
-        (result) => {
-          this.setState({
-            loading: false,
-            data: [result],
-          });
-        },
-        (error) => {
-          this.setState({
-            loading: false,
-            error,
-          });
-        }
-      );*/
-
     const moviesRef = ref(database, "movies");
     onValue(moviesRef, (snapshot) => {
-      this.setState({
-        data: [],
-      });
+      // snapshot.forEach((childSnapshot) => {
+      //   const movieId = childSnapshot.key;
+      //   const databaseMovies = childSnapshot.val();
+      //   this.setState((currentState) => {
+      //     return {
+      //       // data: currentState.data.concat([
+      //       //   {
+      //       //     id: movieId,
+      //       //     items: databaseMovies,
+      //       //   },
+      //       // ]),
+      //       data:
+      //     };
+      //   });
+      // });
+
+      console.log(snapshot.val());
+      console.log(snapshot.hasChildren());
+      // const result = snapshot.map((item) => {
+      //   return { title: item.title };
+      //   console.log(item);
+      // });
+
+      console.log("result");
+
+      const returnList = [];
+
       snapshot.forEach((childSnapshot) => {
-        const movieId = childSnapshot.key;
-        const databaseMovies = childSnapshot.val();
-        this.setState((currentState) => {
-          return {
-            data: currentState.data.concat([
-              {
-                id: movieId,
-                items: [databaseMovies],
-              },
-            ]),
-          };
-        });
+        const id = childSnapshot.key;
+        const description = childSnapshot.val();
+
+        // console.log(movieId, databaseMovies);
+        returnList.push({ id, description });
       });
-      // after all the data is loaded set loading to false
+
+      // set loading to false and set data to state
       this.setState({
         loading: false,
+        data: returnList,
       });
       if (!snapshot.exists()) {
         return <h1>error loading data</h1>;
@@ -69,8 +69,15 @@ class App extends React.Component {
 
   deleteData(key) {
     let movieRef = ref(database, `/movies/${key}`);
-    console.log("PATH REFERENCE", movieRef);
     remove(movieRef);
+  }
+
+  updateData(key) {
+    const moviesRef = ref(database, `/movies/${key}`);
+    const movieData = {
+      watched: true,
+    };
+    update(moviesRef, movieData);
   }
 
   render() {
@@ -91,6 +98,7 @@ class App extends React.Component {
               <MovieList
                 movies={this.state.data}
                 deleteData={this.deleteData}
+                updateData={this.updateData}
               />
             }
           />
@@ -100,6 +108,7 @@ class App extends React.Component {
               <MovieList
                 movies={this.state.data}
                 deleteData={this.deleteData}
+                updateData={this.updateData}
               />
             }
           />

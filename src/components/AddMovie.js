@@ -15,6 +15,7 @@ class AddMovie extends React.Component {
         this.SearchAllMovies = this.SearchAllMovies.bind(this);
         this.updateInput = this.updateInput.bind(this);
         this.pushMovie = this.pushMovie.bind(this);
+        this.submitOnEnter = this.submitOnEnter.bind(this);
     }
 
 
@@ -60,6 +61,14 @@ class AddMovie extends React.Component {
         });
     }
 
+    // submit the form on enter
+    submitOnEnter(e) {
+        if(e.key === 'Enter') {
+            e.preventDefault();
+            this.SearchAllMovies(this.state.input);
+        }
+    }
+
     render() {
         const { error, loading, searchedMovies } = this.state;
         if (error) {
@@ -78,8 +87,9 @@ class AddMovie extends React.Component {
                         placeholder="search..."
                         value={this.state.input}
                         onChange={this.updateInput}
+                        onKeyDown={this.submitOnEnter}
                     />
-                    <button onClick={() => this.SearchAllMovies(this.state.input)}>submit</button>
+                    <input type="submit" onClick={() => this.SearchAllMovies(this.state.input)} />
                     <SearchedMoviesList movies={searchedMovies} handlePushMovie={this.pushMovie}/>
                 </div>
             )
