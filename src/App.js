@@ -6,6 +6,7 @@ import MovieList from "./components/MovieList";
 import AddMovie from "./components/AddMovie";
 import { ref, onValue, remove, update } from "firebase/database";
 import { database } from "./firebase-config";
+import Typography from "@mui/material/Typography";
 
 class App extends React.Component {
   constructor(props) {
@@ -21,38 +22,10 @@ class App extends React.Component {
   componentDidMount() {
     const moviesRef = ref(database, "movies");
     onValue(moviesRef, (snapshot) => {
-      // snapshot.forEach((childSnapshot) => {
-      //   const movieId = childSnapshot.key;
-      //   const databaseMovies = childSnapshot.val();
-      //   this.setState((currentState) => {
-      //     return {
-      //       // data: currentState.data.concat([
-      //       //   {
-      //       //     id: movieId,
-      //       //     items: databaseMovies,
-      //       //   },
-      //       // ]),
-      //       data:
-      //     };
-      //   });
-      // });
-
-      // console.log(snapshot.val());
-      // console.log(snapshot.hasChildren());
-      // const result = snapshot.map((item) => {
-      //   return { title: item.title };
-      //   console.log(item);
-      // });
-
-      //console.log("result");
-
       const returnList = [];
-
       snapshot.forEach((childSnapshot) => {
         const id = childSnapshot.key;
         const description = childSnapshot.val();
-
-        // console.log(movieId, databaseMovies);
         returnList.push({ id, description });
       });
 
@@ -86,7 +59,6 @@ class App extends React.Component {
   }
 
   render() {
-    console.log("THIS APP STATE DATA", this.state);
     if (this.state.error) {
       return <div>Error fetching data :(</div>;
     } else if (this.state.loading === true) {
@@ -94,7 +66,9 @@ class App extends React.Component {
     }
     return (
       <div className="App">
-        <h1>Movie List App</h1>
+        <Typography variant="h3" gutterBottom>
+          Movie List App
+        </Typography>
         <Menu />
         <Routes>
           <Route

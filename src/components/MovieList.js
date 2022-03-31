@@ -1,20 +1,20 @@
 import React from "react";
 import MovieCard from "./MovieCard";
+import Typography from "@mui/material/Typography";
 
 function MovieList(props) {
   const { movies } = props;
-  //console.log("movies", movies);
   const watchedMovies = movies.filter((item) => !item.description.watched);
   const unwatchedMovies = movies.filter((item) => item.description.watched);
   return (
     <div>
-      <h2>Movies to watch</h2>
+      <Typography variant="h5">Movies to watch</Typography>
       <MovieCard
         movies={watchedMovies}
         deleteData={props.deleteData}
         updateData={props.updateData}
       />
-      <h2>Watched Movies</h2>
+      <Typography variant="h5">Watched Movies</Typography>
       <MovieCard
         movies={unwatchedMovies}
         deleteData={props.deleteData}
