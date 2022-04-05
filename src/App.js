@@ -15,6 +15,8 @@ class App extends React.Component {
       data: [],
       loading: true,
       error: null,
+      oblecenie: false,
+      start: false,
     };
     this.updateData = this.updateData.bind(this);
   }
@@ -41,21 +43,22 @@ class App extends React.Component {
   }
 
   deleteData(key) {
-    let movieRef = ref(database, `/movies/${key}`);
+    const movieRef = ref(database, `/movies/${key}`);
     remove(movieRef);
   }
 
   updateData(key) {
     const watchedMoviesRef = ref(database, `/movies/${key}`);
-    //const moviesRef = ref(database, `/movies/${key}`);
     let movieData;
     onValue(watchedMoviesRef, (snapshot) => {
+      // when snapshot was null error was thrown
+      if (snapshot.exists() === false) {
+        return null;
+      }
       const newData = snapshot.val().watched;
       movieData = { watched: !newData };
     });
     update(watchedMoviesRef, movieData);
-
-    //update(moviesRef, movieData);
   }
 
   render() {

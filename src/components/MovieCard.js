@@ -1,4 +1,6 @@
 import React from "react";
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
 
 function MovieCard(props) {
   const { movies } = props;
@@ -6,17 +8,21 @@ function MovieCard(props) {
     <>
       {movies.map((item, i) => (
         <div key={i}>
-          <h4>{item.description.title}</h4>
-          <p>{item.description.overview}</p>
+          <Typography variant="h6">{item.description.title}</Typography>
+          <Typography variant="body2">{item.description.overview}</Typography>
           {
             // if,else to show different button if the movie was watched
             item.description.watched === false ? (
-              <button onClick={() => props.updateData(item.id)}>watched</button>
+              <Button color="primary" onClick={() => props.updateData(item.id)}>
+                watched
+              </Button>
             ) : (
-              <button onClick={() => props.updateData(item.id)}>watch</button>
+              <Button onClick={() => props.updateData(item.id)}>watch</Button>
             )
           }
-          <button onClick={() => props.deleteData(item.id)}>delete</button>
+          <Button color="error" onClick={() => props.deleteData(item.id)}>
+            delete
+          </Button>
         </div>
       ))}
     </>
