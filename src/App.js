@@ -7,6 +7,9 @@ import AddMovie from "./components/AddMovie";
 import { ref, onValue, remove, update } from "firebase/database";
 import { database } from "./firebase-config";
 import Typography from "@mui/material/Typography";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
+import { Paper } from "@mui/material";
 
 class App extends React.Component {
   constructor(props) {
@@ -15,10 +18,10 @@ class App extends React.Component {
       data: [],
       loading: true,
       error: null,
-      oblecenie: false,
-      start: false,
+      open: false,
     };
     this.updateData = this.updateData.bind(this);
+    this.deleteData = this.deleteData.bind(this);
   }
 
   componentDidMount() {
@@ -43,10 +46,14 @@ class App extends React.Component {
   }
 
   deleteData(key) {
+    this.setState({
+      open: true,
+    });
     const movieRef = ref(database, `/movies/${key}`);
     remove(movieRef);
   }
 
+  //Change watched to watch, and vice versa
   updateData(key) {
     const watchedMoviesRef = ref(database, `/movies/${key}`);
     let movieData;
@@ -69,10 +76,12 @@ class App extends React.Component {
     }
     return (
       <div className="App">
-        <Typography variant="h3" gutterBottom>
-          Movie List App
-        </Typography>
-        <Menu />
+        <Paper elevation={3}>
+          <Typography variant="h3" gutterBottom>
+            Movie List App
+          </Typography>
+          <Menu />
+        </Paper>
         <Routes>
           <Route
             index
@@ -96,6 +105,18 @@ class App extends React.Component {
           />
           <Route path="addMovie" element={<AddMovie />} />
         </Routes>
+
+        {/* Alert button on delete */}
+        <Snackbar
+          open={this.state.open}
+          autoHideDuration={1000}
+          onClose={() => this.setState({ open: false })}
+          message="Note archived"
+        >
+          <MuiAlert severity="warning" variant="filled" sx={{ width: "100%" }}>
+            This is a success message!
+          </MuiAlert>
+        </Snackbar>
       </div>
     );
   }

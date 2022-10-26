@@ -8,13 +8,17 @@ function MovieList(props) {
   const unwatchedMovies = movies.filter((item) => item.description.watched);
   return (
     <div>
-      <Typography variant="h5">Movies to watch</Typography>
+      <Typography variant="h5" align="center">
+        Movies to watch
+      </Typography>
       <MovieCard
         movies={watchedMovies}
         deleteData={props.deleteData}
         updateData={props.updateData}
       />
-      <Typography variant="h5">Watched Movies</Typography>
+      <Typography variant="h5" align="center">
+        Watched Movies
+      </Typography>
       <MovieCard
         movies={unwatchedMovies}
         deleteData={props.deleteData}

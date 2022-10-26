@@ -2,6 +2,8 @@ import React from "react";
 import SearchedMoviesList from "./SearchedMoviesList";
 import { database } from "../firebase-config";
 import { ref, push, set } from "firebase/database";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
 
 class AddMovie extends React.Component {
   constructor(props) {
@@ -11,6 +13,7 @@ class AddMovie extends React.Component {
       error: null,
       loading: null,
       input: "",
+      open: false,
     };
     this.SearchAllMovies = this.SearchAllMovies.bind(this);
     this.updateInput = this.updateInput.bind(this);
@@ -22,7 +25,6 @@ class AddMovie extends React.Component {
     if (!keyword) {
       return null;
     }
-
     return fetch(
       `https://api.themoviedb.org/3/search/movie?api_key=c29d13a24d8fc2be9bf34aa8c04f45b2&language=en-US&query=${keyword}&include_adult=false`
     )
@@ -51,11 +53,15 @@ class AddMovie extends React.Component {
   }
 
   pushMovie(movie) {
+    this.setState({
+      open: true,
+    });
     const postMovieRef = ref(database, "movies");
     const newPostRef = push(postMovieRef);
     set(newPostRef, {
       title: movie.title,
       overview: movie.overview,
+      poster_path: movie.poster_path,
       watched: false,
     });
   }
@@ -89,6 +95,21 @@ class AddMovie extends React.Component {
             type="submit"
             onClick={() => this.SearchAllMovies(this.state.input)}
           />
+          <Snackbar
+            open={this.state.open}
+            autoHideDuration={3000}
+            onClose={() => this.setState({ open: false })}
+            message="Note archived"
+            // action={action}
+          >
+            <MuiAlert
+              severity="success"
+              variant="filled"
+              sx={{ width: "100%" }}
+            >
+              This is a success message!
+            </MuiAlert>
+          </Snackbar>
           <SearchedMoviesList
             movies={searchedMovies}
             handlePushMovie={this.pushMovie}
