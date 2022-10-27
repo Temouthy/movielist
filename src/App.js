@@ -6,13 +6,6 @@ import MovieList from "./components/MovieList";
 import AddMovie from "./components/AddMovie";
 import { ref, onValue, remove, update } from "firebase/database";
 import { database } from "./firebase-config";
-<<<<<<< HEAD
-import Typography from "@mui/material/Typography";
-import Snackbar from "@mui/material/Snackbar";
-import MuiAlert from "@mui/material/Alert";
-import { Paper } from "@mui/material";
-=======
->>>>>>> parent of 1fe0232... install MUI
 
 class App extends React.Component {
   constructor(props) {
@@ -108,17 +101,10 @@ class App extends React.Component {
     }
     return (
       <div className="App">
-<<<<<<< HEAD
-        <Paper elevation={3}>
-          <Typography variant="h3" gutterBottom>
-            Movie List App
-          </Typography>
-          <Menu />
-        </Paper>
-=======
+        Movie List App
+        <Menu />
         <h1>Movie List App</h1>
         <Menu />
->>>>>>> parent of 1fe0232... install MUI
         <Routes>
           <Route
             index
@@ -142,18 +128,7 @@ class App extends React.Component {
           />
           <Route path="addMovie" element={<AddMovie />} />
         </Routes>
-
         {/* Alert button on delete */}
-        <Snackbar
-          open={this.state.open}
-          autoHideDuration={1000}
-          onClose={() => this.setState({ open: false })}
-          message="Note archived"
-        >
-          <MuiAlert severity="warning" variant="filled" sx={{ width: "100%" }}>
-            This is a success message!
-          </MuiAlert>
-        </Snackbar>
       </div>
     );
   }
